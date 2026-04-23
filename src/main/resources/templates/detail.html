@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>글 상세보기</title>
+</head>
+<body>
+<div class="container">
+    <h2 th:text="${board.title}">제목</h2>
+    <hr>
+    <div>
+        작성자: <span th:text="${board.nickname}"></span> |
+        날짜: <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+        조회수: <span th:text="${board.views}"></span>
+        좋아요: <span th:text="${board.likes}"></span>
+    </div>
+    <hr>
+    <div style="min-height: 200px;">
+        <p th:text="${board.content}">내용이 여기에 표시됩니다.</p>
+    </div>
+    <hr>
+    <div class="comment-section" style="margin-top: 30px;">
+        <h3>댓글 목록 (<span th:text="${#lists.size(board.comments)}">0</span>)</h3>
+        <hr>
+
+        <div th:each="comment : ${board.comments}" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+            <div style="font-weight: bold;">
+                <span th:text="${comment.nickname}">작성자</span>
+                <small style="color: #888; font-weight: normal; margin-left: 10px;"
+                       th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">
+                    2026-04-23 22:30
+                </small>
+            </div>
+            <div style="margin-top: 5px;" th:text="${comment.content}">
+                댓글 내용이 여기에 들어갑니다.
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(board.comments)}" style="color: #888; padding: 20px 0;">
+            아직 등록된 댓글이 없습니다.
+        </div>
+    </div>
+    <div class="btn-group">
+        <a th:href="@{/board/list}" class="btn">목록으로</a>
+        <a th:href="@{/board/edit/{id}(id=${board.id})}" class="btn">수정하기</a>
+    </div>
+</div>
+</body>
+</html>
