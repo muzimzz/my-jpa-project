@@ -20,8 +20,8 @@
     <tbody>
     <tr th:each="board : ${boards}">
         <td th:text="${board.id}">1</td>
-        <td><a th:href="@{/board/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
-        <td th:text="${board.member.nickname}">작성자</td>
+        <td><a th:href="@{/board/detail/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
+        <td th:text="${board.nickname}">작성자</td>
         <td th:text="${board.views}">0</td>
         <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd')}">2026-04-22</td>
     </tr>

@@ -1,5 +1,6 @@
 package com.board.review.domain;
 
+import com.board.review.dto.BoardDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -38,5 +39,10 @@ public class Board extends BaseTimeEntity {
         this.member = member;
         this.title = title;
         this.content = content;
+    }
+
+    public void update(BoardDto boardDto) {
+        this.title = boardDto.getTitle();
+        this.content = boardDto.getContent();
     }
 }

@@ -1,0 +1,33 @@
+<body>
+<div class="container">
+    <h2>게시글 수정</h2>
+    <hr>
+
+    <form th:action="@{/board/update/{id}(id=${board.id})}" th:object="${board}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <div style="margin-bottom: 15px;">
+            <label for="title" style="display: block; font-weight: bold;">제목</label>
+            <input type="text" th:field="*{title}" id="title" style="width: 100%; padding: 8px;" required>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold;">작성자</label>
+            <input type="text" th:field="*{nickname}" readonly style="background-color: #eee; width: 100%; padding: 8px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="content" style="display: block; font-weight: bold;">내용</label>
+            <textarea th:field="*{content}" id="content" rows="10" style="width: 100%; padding: 8px;" required></textarea>
+        </div>
+
+        <hr>
+        <div class="btn-group">
+            <button type="submit" class="btn">수정 완료</button>
+            <a th:href="@{/board/detail/{id}(id=${board.id})}" class="btn" style="background-color: #ccc; text-decoration: none; padding: 5px 10px; color: black; border-radius: 4px;">취소</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
