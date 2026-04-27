@@ -2,6 +2,7 @@ package com.board.review.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,15 +18,22 @@ public class Comment extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne // (fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @ManyToOne // (fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
     /*
     public void confirmBoard(Board board) { ... }
     */
+
+    @Builder
+    public Comment(String content, Board board, Member member) {
+        this.content = content;
+        this.board = board;
+        this.member = member;
+    }
 }

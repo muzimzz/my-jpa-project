@@ -21,7 +21,7 @@ public class BoardDto {
     private LocalDateTime createdAt;
     private int likes;
     private int views;
-    private List<CommentResponse> comments;
+    private List<CommentDto> comments;
 
     public Board toEntity(Member member) {
         return Board.builder()
@@ -42,7 +42,7 @@ public class BoardDto {
                 .views(board.getViews())
                 // 댓글 리스트도 DTO로 변환하여 담아줍니다.
                 .comments(board.getComments().stream()
-                        .map(CommentResponse::new)
+                        .map(CommentDto::from)
                         .collect(Collectors.toList()))
                 .build();
     }

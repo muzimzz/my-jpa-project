@@ -39,6 +39,28 @@
             아직 등록된 댓글이 없습니다.
         </div>
     </div>
+    <div style="margin-top: 30px; padding: 25px; background-color: #fcfcfc; border: 1px solid #eee; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+        <h4 style="margin-bottom: 15px; color: #333;">💬 댓글 남기기</h4>
+
+        <form th:action="@{/board/comment/{id}(id=${board.id})}" method="post">
+            <div style="margin-bottom: 15px;">
+                <input type="text" name="nickname" placeholder="닉네임" required
+                       style="width: 200px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+            <textarea name="content" rows="4" placeholder="댓글을 남겨주세요." required
+                      style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; line-height: 1.5; resize: none;"></textarea>
+            </div>
+
+            <div style="text-align: right;">
+                <button type="submit" class="btn"
+                        style="background-color: #4CAF50; color: white; border: none; padding: 10px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: background 0.3s;">
+                    댓글 등록하기
+                </button>
+            </div>
+        </form>
+    </div>
     <div class="btn-group">
         <a th:href="@{/board/list}" class="btn">목록</a>
         <a th:href="@{/board/edit/{id}(id=${board.id})}" class="btn">수정</a>

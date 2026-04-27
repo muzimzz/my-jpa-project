@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
@@ -14,7 +17,10 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query(value="update Board set views = views + 1 where id = :id")
     void updateViews(@Param("id") Long id);
 
-    @Modifying //(clearAutomatically = true)
-    @Query("update Board set likes = likes + 1 where id = :id")
-    void updateLikes(@Param("id") Long id);
+    @Query(value="select b from Board b join b.member left join b.comments")
+    List<Board> findAllWithMemberAndComments();
+
+//    @Modifying //(clearAutomatically = true)
+//    @Query("update Board set likes = likes + 1 where id = :id")
+//    void updateLikes(@Param("id") Long id);
 }
