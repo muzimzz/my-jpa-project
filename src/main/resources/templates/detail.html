@@ -11,7 +11,7 @@
         작성자: <span th:text="${board.nickname}"></span> |
         날짜: <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
         조회수: <span th:text="${board.views}"></span>
-        좋아요: <span th:text="${board.likes}"></span>
+        좋아요: <span id="like-count" th:text="${board.likes}"></span>
     </div>
     <hr>
     <div style="min-height: 200px;">
@@ -45,6 +45,24 @@
         <form th:action="@{/board/delete/{id}(id=${board.id})}" method="post">
             <button type="submit" class="btn" style="background-color: red; color: white;">삭제></button>
         </form>
+        <button type="button" th:onclick="|pushLike(${board.id})|">좋아요</button>
+        <script>
+            function pushLike(boardId) {
+                fetch(`/board/like/${boardId}`, {
+                    method: 'POST'
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error("네트워크 응답 에러");
+                        return response.json(); // 서버에서 리턴한 int(좋아요 수)를 받음
+                    })
+                    .then(likeCount => {
+                        // 서버에서 받은 최신 숫자로 화면을 업데이트합니다.
+                        document.getElementById('like-count').innerText = likeCount;
+                        console.log("좋아요 반영 완료:", likeCount);
+                    })
+                    .catch(error => console.error("에러 발생:", error));
+            }
+        </script>
     </div>
 </div>
 </body>

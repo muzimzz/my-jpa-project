@@ -20,21 +20,6 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
-    @Transactional  // fetch join 해보기
-    public List<BoardDto> findAll() {
-
-//        List<Board> boards = boardRepository.findAll();
-//        List<BoardDto> boardDtoList = new ArrayList<>();
-//        for (Board board : boards) {
-//            boardDtoList.add(BoardDto.from(board));
-//        }
-//        return boardDtoList;
-
-        return boardRepository.findAll().stream()
-                .map(BoardDto::from)
-                .collect(Collectors.toList());
-    }
-
     public void save(BoardDto boardDto) {
 
         // 세션, 로그인 기능이 없어 일단 sample Member를 만들어 사용
@@ -59,6 +44,34 @@ public class BoardService {
         return BoardDto.from(board);
     }
 
+    @Transactional  // fetch join 해보기
+    public List<BoardDto> findAll() {
+
+//        List<Board> boards = boardRepository.findAll();
+//        List<BoardDto> boardDtoList = new ArrayList<>();
+//        for (Board board : boards) {
+//            boardDtoList.add(BoardDto.from(board));
+//        }
+//        return boardDtoList;
+
+        return boardRepository.findAll().stream()
+                .map(BoardDto::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateViews(Long id) {
+        boardRepository.updateViews(id);
+    }
+
+    @Transactional
+    public int updateLikes(Long id) {
+        boardRepository.updateLikes(id);
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 없음"))
+                .getLikes();
+    }
+
     @Transactional
     public void update(Long id, BoardDto boardDto) {
 
@@ -72,4 +85,7 @@ public class BoardService {
     public void deleteById(Long id) {
         boardRepository.deleteById(id);
     }
+
+
+
 }

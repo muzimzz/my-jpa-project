@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -16,13 +17,6 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
-
-    @GetMapping("/list")
-    public String findAll(Model model) {
-        List<BoardDto> boardList = boardService.findAll();
-        model.addAttribute("boards", boardList);
-        return "list";
-    }
 
     @GetMapping("/write")
     public String saveForm() {
@@ -39,11 +33,31 @@ public class BoardController {
     }
 
     @GetMapping("/detail/{id}")
-    public String findById(@PathVariable Long id, Model model) {
+    public String findById(@PathVariable Long id,
+                           @RequestParam(defaultValue = "false") boolean isUpdated,
+                           Model model) {
+        if (!isUpdated)
+            boardService.updateViews(id);
+
         BoardDto board = boardService.findById(id);
         model.addAttribute("board", board);
         return "detail";
     }
+
+    @PostMapping("/like/{id}")
+    @ResponseBody
+    public int updateLikes(@PathVariable Long id) {
+        System.out.println("좋아요 버튼 클릭");
+        return boardService.updateLikes(id);
+    }
+
+    @GetMapping("/list")
+    public String findAll(Model model) {
+        List<BoardDto> boardList = boardService.findAll();
+        model.addAttribute("boards", boardList);
+        return "list";
+    }
+
 
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
@@ -53,7 +67,9 @@ public class BoardController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable Long id, @ModelAttribute BoardDto boardDto) {
+    public String update(@PathVariable Long id, @ModelAttribute BoardDto boardDto, RedirectAttributes redirectAttributes) {
+        boolean isUpdated = true;
+        redirectAttributes.addAttribute("isUpdated", true);
         boardService.update(id, boardDto);
         return "redirect:/board/detail/" + id;
     }
